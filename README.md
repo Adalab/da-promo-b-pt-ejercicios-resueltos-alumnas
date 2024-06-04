@@ -1,10 +1,10 @@
 
-# Hola Promo B! y bienvenidas al repositorio de ejercicios! 👋
+# Hola Promo B! y bienvenidas al repositorio de alumnas! 👋
 
 
 ## 🚀 Que haremos en este repositorio?
 
-Este espacio esta destinado a que ustedes mismas puedan, no solo guardar sus ejercicios, sino tambien para que puedan compartirlo! no les parece super? Pues a mi si! 😄.
+Este espacio esta destinado a que ustedes mismas puedan, no solo guardar sus ejercicios, sino tambien para que puedan compartirlo! no les parece super?😄.
 
 Teniendo los ejercicos aqui, podremos ver tambien como resolvieron las demas Adalabers, y porque no, ver otro punto de vista del mismo problema (Github, eres lo mas!).
 
@@ -22,7 +22,6 @@ Ejemplo: modulo-1/modulo-1-leccion-01-ejercicio-01-html-tags-maricarmen.
 
 👯‍♀️De esta forma es muy sencillo ver de un vistazo todos los ejercicios.
 
-⚡️NOTA: si alguien no tiene permisos para subir código a este repositorio se lo pedimos al instructor o a alguna compañera que sí tenga permisos.
 
 
 🤔 tengo un ejercicio a medias pero no termina de ir 
