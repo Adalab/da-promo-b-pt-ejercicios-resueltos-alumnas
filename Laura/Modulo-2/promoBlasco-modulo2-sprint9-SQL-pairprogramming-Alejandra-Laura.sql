@@ -1,94 +1,77 @@
 USE tienda;
 
+/* Ejercicio 1: Realiza una consulta SELECT que obtenga el número 
+identificativo de cliente más bajo de la base de datos.*/
 
-/* Ejercicio 1: Selecciona el ID, nombre, apellidos de las empleadas y el ID de cada cliente asociado a ellas, usando CROSS JOIN.*/
-SELECT em.employee_number, em.first_name, em.last_name, ct.customer_number
-FROM employees AS em
-CROSS JOIN customers AS ct
-WHERE ct.sales_rep_employee_number = em.employee_number
-ORDER BY ct.customer_number;
+SELECT MIN(customer_number) AS id_min
+FROM customers;
 
-/* Ejercicio 2: Selecciona el ID, nombre, apellidos de las empleadas, para aquellas con más de 8 clientes, usando CROSS JOIN.*/
-SELECT em.employee_number, em.first_name, em.last_name
-FROM employees AS em
-CROSS JOIN customers AS ct
-WHERE ct.sales_rep_employee_number = em.employee_number
-GROUP BY em.employee_number
-HAVING COUNT(DISTINCT ct.customer_number) >8
-ORDER BY em.employee_number;
+/* Ejercicio 2: 
+Selecciona el limite de crédito medio para los clientes de España.*/
 
-/* Ejercicio 3: Selecciona el nombre y apellidos de las empleadas que tienen clientes de más de un país, usando CROSS JOIN.*/
-SELECT em.first_name, em.last_name
-FROM employees AS em
-CROSS JOIN customers AS ct
-WHERE ct.sales_rep_employee_number = em.employee_number
-GROUP BY em.first_name
-HAVING COUNT(DISTINCT country) > 1;
+SELECT AVG(credit_limit) AS credit_limit_avg
+FROM customers
+WHERE country = "Spain";
 
-/* Ejercicio 4: Selecciona el ID, nombre, apellidos de las empleadas y el ID de cada cliente asociado a ellas, usando INNER JOIN.*/
+/* Ejercicio 3: Selecciona el numero de clientes en Francia.*/
 
-SELECT em.employee_number, em.first_name, em.last_name, ct.customer_number
-FROM employees AS em
-INNER JOIN customers AS ct
-ON ct.sales_rep_employee_number = em.employee_number;
-
-/* Ejercicio 5: Selecciona el ID, nombre, apellidos de las empleadas, para aquellas con más de 8 clientes, usando INNER JOIN.*/
-
-SELECT em.employee_number, em.first_name, em.last_name
-FROM employees AS em
-INNER JOIN customers AS ct
-ON ct.sales_rep_employee_number = em.employee_number
-GROUP BY ct.sales_rep_employee_number
-HAVING COUNT(DISTINCT ct.customer_number) >8; 
+SELECT COUNT(*) 
+FROM customers
+WHERE country = "France";
 
 
-/* Ejercicio 6: Selecciona el nombre y apellidos de las empleadas que tienen clientes de más de un país, usando INNER JOIN.*/
+/* Ejercicio 4: Selecciona el máximo de crédito que tiene 
+cualquiera de los clientes del empleado con número 1323.*/
 
-SELECT em.first_name, em.last_name
-FROM employees AS em
-INNER JOIN customers AS ct
-ON ct.sales_rep_employee_number = em.employee_number
-GROUP BY em.first_name
-HAVING COUNT(DISTINCT country) > 1;
+SELECT MAX(credit_limit) AS credit_limit_max
+FROM customers
+WHERE sales_rep_employee_number = 1323;
 
-/* Ejercicio 7: Selecciona el ID, nombre, apellidos de todas las empleadas y el ID de cada cliente asociado a ellas (si es que lo tienen).*/
+/* Ejercicio 5: ¿Cuál es el número máximo de empleado de la tabla customers? */
 
-SELECT em.employee_number, ct.sales_rep_employee_number, em.first_name, em.last_name, ct.customer_number
-FROM customers AS ct
-INNER JOIN employees AS em
-ON em.employee_number = ct.sales_rep_employee_number; 
-/* NO DEBERIA TENER QUE ESPECIFICAR QUE COLUMNAS SON COMUNES PORQUE sales_rep_employee_number es foreign key ligada a employee_number... */
+SELECT MAX(sales_rep_employee_number)
+FROM customers;
 
-/* Ejercicio 8: Selecciona el ID de todos los clientes, y el nombre, apellidos de las empleadas que llevan sus pedidos (si es que las hay).*/
+/* Ejercicio 6: 
+Realiza una consulta SELECT que seleccione el número de cada empleado de ventas, 
+así como el numero de clientes distintos que tiene cada uno. */
 
-SELECT ct.customer_number, em.first_name, em.last_name
-FROM customers AS ct
-INNER JOIN employees AS em
-ON em.employee_number = ct.sales_rep_employee_number; 
+SELECT COUNT(customer_name) AS customers_quantity, sales_rep_employee_number
+FROM customers
+GROUP BY sales_rep_employee_number;
 
-/* Ejercicio 9: Selecciona el ID, nombre, apellidos de las empleadas, para aquellas con más de 8 clientes, usando LEFT JOIN.*/
+/* Ejercicio 7: 
+Selecciona el número de cada empleado de ventas que tenga más de 7 clientes distintos. */
 
-SELECT ct.sales_rep_employee_number, em.first_name, em.last_name
-FROM customers AS ct
-LEFT JOIN employees AS em
-ON ct.sales_rep_employee_number = em.employee_number
-GROUP BY em.employee_number
-HAVING COUNT(ct.customer_number) >8;
+SELECT sales_rep_employee_number, COUNT(customer_name)
+FROM customers
+GROUP BY sales_rep_employee_number
+HAVING COUNT(customer_name) > 7;
 
-/* Ejercicio 10: Selecciona el ID, nombre, apellidos de las empleadas, para aquellas con más de 8 clientes, usando LEFT JOIN.*/
+/* Ejercicio 8: 
+Selecciona el número de cada empleado de ventas, así como el numero de clientes distintos 
+que tiene cada uno. Asigna una etiqueta de "AltoRendimiento" a aquellos empleados con mas de 
+7 clientes distintos. */
 
-SELECT ct.sales_rep_employee_number, em.first_name, em.last_name
-FROM customers AS ct
-RIGHT JOIN employees AS em
-ON ct.sales_rep_employee_number = em.employee_number
-GROUP BY em.employee_number
-HAVING COUNT(ct.customer_number) >8;
+SELECT sales_rep_employee_number,
+CASE
+	WHEN COUNT(customer_number) > 7 THEN "AltoRendimiento"
+    ELSE "BajoRendimiento"
+    END AS best_employees
+FROM customers
+GROUP BY sales_rep_employee_number;
 
-/* Ejercicio 11: Selecciona el nombre y apellidos de las empleadas que tienen clientes de más de un país, usando LEFT JOIN.*/
+/* Ejercicio 9: Selecciona el número de clientes en cada pais. */
 
-SELECT em.first_name, em.last_name
-FROM employees AS em
-LEFT JOIN customers AS ct
-ON ct.sales_rep_employee_number = em.employee_number
-GROUP BY em.first_name
-HAVING COUNT(DISTINCT country) > 1;
+SELECT COUNT(customer_number), country
+FROM customers
+GROUP BY country;
+
+/* Ejercicio 10: 
+Selecciona aquellos países que tienen clientes de más de 3 ciudades diferentes.*/
+
+SELECT country, COUNT(city)
+FROM customers
+GROUP BY country
+HAVING COUNT(city) > 3;
+
